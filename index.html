@@ -320,6 +320,9 @@
         }
 
         // Déplacer le bouton "Non" aléatoirement
+        let lastX = 0;
+        let lastY = 0;
+        
         function moveButton() {
             const btn = document.getElementById('btnNo');
             const container = document.getElementById('buttonContainer');
@@ -328,6 +331,11 @@
             // Ajouter la classe pour le positionner en absolu
             if (!btn.classList.contains('moving')) {
                 btn.classList.add('moving');
+                // Sauvegarder la position initiale
+                const rect = btn.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                lastX = rect.left - containerRect.left;
+                lastY = rect.top - containerRect.top;
             }
             
             // Changer le texte du bouton
@@ -340,15 +348,18 @@
             
             let randomX, randomY;
             let attempts = 0;
-            const maxAttempts = 20;
+            const maxAttempts = 30;
             
-            // Trouver une position qui n'overlap pas le bouton Oui
+            // Trouver une position éloignée qui n'overlap pas le bouton Oui
             do {
                 const maxX = containerRect.width - 150;
                 
                 randomX = Math.random() * maxX;
                 // Peut aller de -80px (haut) à +150px (bas)
                 randomY = (Math.random() * 230) - 80;
+                
+                // Calculer la distance avec la position précédente
+                const distance = Math.sqrt(Math.pow(randomX - lastX, 2) + Math.pow(randomY - lastY, 2));
                 
                 // Position absolue du bouton Non
                 const btnNoLeft = containerRect.left + randomX;
@@ -364,9 +375,14 @@
                     btnNoTop > btnYesRect.bottom + 10
                 );
                 
-                if (noOverlap) break;
+                // La position doit être éloignée (au moins 120px) ET ne pas chevaucher le bouton Oui
+                if (noOverlap && distance > 120) break;
                 attempts++;
             } while (attempts < maxAttempts);
+            
+            // Sauvegarder la nouvelle position
+            lastX = randomX;
+            lastY = randomY;
             
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
