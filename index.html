@@ -296,7 +296,26 @@
             "Il s'enfuit ! 🏃",
             "S'il te plaît ! 🙏",
             "Tu sais que tu veux dire oui... 😊",
-            "Fais-moi plaisir ! 💖"
+            "Fais-moi plaisir ! 💖",
+            "Encore raté ! 😄",
+            "Presque ! 😜",
+            "Essaie encore ! 💝"
+        ];
+
+        // Positions prédéfinies pour le bouton (en pourcentage et pixels)
+        // Ces positions parcourent tout le rectangle blanc
+        const positions = [
+            { left: '10%', top: '-60px' },      // Haut gauche
+            { left: '60%', top: '-60px' },      // Haut droite
+            { left: '5%', top: '40px' },        // Milieu gauche haut
+            { left: '65%', top: '40px' },       // Milieu droite haut
+            { left: '10%', top: '120px' },      // Bas gauche
+            { left: '60%', top: '120px' },      // Bas droite
+            { left: '35%', top: '-50px' },      // Haut centre
+            { left: '0%', top: '80px' },        // Milieu gauche
+            { left: '70%', top: '80px' },       // Milieu droite extrême
+            { left: '30%', top: '130px' },      // Bas centre gauche
+            { left: '50%', top: '110px' }       // Bas centre droite
         ];
 
         let clickCount = 0;
@@ -319,73 +338,25 @@
             }, 300);
         }
 
-        // Déplacer le bouton "Non" aléatoirement
-        let lastX = 0;
-        let lastY = 0;
-        
+        // Déplacer le bouton "Non" vers des positions prédéfinies
         function moveButton() {
             const btn = document.getElementById('btnNo');
-            const container = document.getElementById('buttonContainer');
-            const btnYes = document.querySelector('.btn-yes');
             
             // Ajouter la classe pour le positionner en absolu
             if (!btn.classList.contains('moving')) {
                 btn.classList.add('moving');
-                // Sauvegarder la position initiale
-                const rect = btn.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-                lastX = rect.left - containerRect.left;
-                lastY = rect.top - containerRect.top;
             }
             
             // Changer le texte du bouton
             btn.textContent = messages[clickCount % messages.length];
+            
+            // Prendre la position suivante dans le tableau (cycle infini)
+            const position = positions[clickCount % positions.length];
+            
+            btn.style.left = position.left;
+            btn.style.top = position.top;
+            
             clickCount++;
-
-            // Position aléatoire dans le container (peut aller partout)
-            const containerRect = container.getBoundingClientRect();
-            const btnYesRect = btnYes.getBoundingClientRect();
-            
-            let randomX, randomY;
-            let attempts = 0;
-            const maxAttempts = 30;
-            
-            // Trouver une position éloignée qui n'overlap pas le bouton Oui
-            do {
-                const maxX = containerRect.width - 150;
-                
-                randomX = Math.random() * maxX;
-                // Peut aller de -80px (haut) à +150px (bas)
-                randomY = (Math.random() * 230) - 80;
-                
-                // Calculer la distance avec la position précédente
-                const distance = Math.sqrt(Math.pow(randomX - lastX, 2) + Math.pow(randomY - lastY, 2));
-                
-                // Position absolue du bouton Non
-                const btnNoLeft = containerRect.left + randomX;
-                const btnNoTop = containerRect.top + randomY;
-                const btnNoRight = btnNoLeft + 150;
-                const btnNoBottom = btnNoTop + 60;
-                
-                // Vérifier s'il y a overlap avec le bouton Oui
-                const noOverlap = (
-                    btnNoRight < btnYesRect.left - 10 ||
-                    btnNoLeft > btnYesRect.right + 10 ||
-                    btnNoBottom < btnYesRect.top - 10 ||
-                    btnNoTop > btnYesRect.bottom + 10
-                );
-                
-                // La position doit être éloignée (au moins 120px) ET ne pas chevaucher le bouton Oui
-                if (noOverlap && distance > 120) break;
-                attempts++;
-            } while (attempts < maxAttempts);
-            
-            // Sauvegarder la nouvelle position
-            lastX = randomX;
-            lastY = randomY;
-            
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
         }
 
         // Créer des confettis
