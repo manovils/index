@@ -293,7 +293,7 @@
             "Allez, clique sur Oui ! 🥺",
             "T'es sûre ? 💕",
             "Arrête ! 😅",
-            "Tu ne m’attrapera jamais! 🏃",
+            "Tu ne m'attrapera jamais! 🏃",
             "S'il te plaît ! 🙏",
             "Tu sais que tu veux dire oui 😊",
             "Fais-moi plaisir ! 💖",
@@ -388,4 +388,28 @@
             successScreen.classList.add('active');
             
             // Créer des confettis
-            createConfetti(
+            createConfetti();
+
+            // Envoyer la notification par email via Formspree
+            fetch('https://formspree.io/f/maqdegek', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: '💕 Elle a dit OUI pour la Saint-Valentin 2026 ! 💕',
+                    date: new Date().toLocaleString('fr-FR'),
+                    subject: '💖 Réponse Saint-Valentin 2026'
+                })
+            }).catch(error => {
+                console.log('Note: Configurez Formspree pour recevoir les notifications email');
+            });
+        }
+
+        // Initialiser les cœurs flottants au chargement
+        window.onload = function() {
+            createFloatingHearts();
+        };
+    </script>
+</body>
+</html>
