@@ -291,31 +291,31 @@
         // Messages qui changent quand on essaie de cliquer sur "Non"
         const messages = [
             "Allez, clique sur Oui ! 🥺",
-            "T'es sûr(e) ? 💕",
+            "T'es sûre ? 💕",
             "Arrête ! 😅",
-            "Il s'enfuit ! 🏃",
+            "Tu ne m’attrapera jamais! 🏃",
             "S'il te plaît ! 🙏",
-            "Tu sais que tu veux dire oui... 😊",
+            "Tu sais que tu veux dire oui 😊",
             "Fais-moi plaisir ! 💖",
             "Encore raté ! 😄",
-            "Presque ! 😜",
-            "Essaie encore ! 💝"
+            "l'autre bouton ne s'enfuit pas ! 😜",
+            "Essaie l'autre bouton ! 💝"
         ];
 
-        // Positions prédéfinies pour le bouton (en pourcentage et pixels)
-        // Ces positions parcourent tout le rectangle blanc
+        // Positions prédéfinies pour le bouton (en pixels)
+        // Positions bien réparties qui évitent complètement le centre
         const positions = [
-            { left: '10%', top: '-60px' },      // Haut gauche
-            { left: '60%', top: '-60px' },      // Haut droite
-            { left: '5%', top: '40px' },        // Milieu gauche haut
-            { left: '65%', top: '40px' },       // Milieu droite haut
-            { left: '10%', top: '120px' },      // Bas gauche
-            { left: '60%', top: '120px' },      // Bas droite
-            { left: '35%', top: '-50px' },      // Haut centre
-            { left: '0%', top: '80px' },        // Milieu gauche
-            { left: '70%', top: '80px' },       // Milieu droite extrême
-            { left: '30%', top: '130px' },      // Bas centre gauche
-            { left: '50%', top: '110px' }       // Bas centre droite
+            { left: '10px', top: '-60px' },      // Haut gauche extrême
+            { left: '10px', top: '20px' },       // Milieu gauche haut
+            { left: '10px', top: '90px' },       // Milieu gauche bas
+            { left: '10px', top: '140px' },      // Bas gauche extrême
+            { left: '10px', top: '-40px' },      // Haut gauche
+            { left: 'calc(100% - 160px)', top: '-60px' },   // Haut droite extrême
+            { left: 'calc(100% - 160px)', top: '20px' },    // Milieu droite haut
+            { left: 'calc(100% - 160px)', top: '90px' },    // Milieu droite bas
+            { left: 'calc(100% - 160px)', top: '140px' },   // Bas droite extrême
+            { left: 'calc(100% - 160px)', top: '-40px' },   // Haut droite
+            { left: '10px', top: '60px' }        // Milieu gauche centre
         ];
 
         let clickCount = 0;
@@ -388,30 +388,4 @@
             successScreen.classList.add('active');
             
             // Créer des confettis
-            createConfetti();
-
-            // Envoyer la notification par email via Formspree
-            // IMPORTANT : Remplacez 'VOTRE_ID_FORMSPREE' par votre vrai ID Formspree
-            // Pour obtenir un ID : allez sur https://formspree.io/ et créez un compte gratuit
-            fetch('https://formspree.io/f/maqdegek', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: '💕 Elle a dit OUI pour la Saint-Valentin 2026 ! 💕',
-                    date: new Date().toLocaleString('fr-FR'),
-                    subject: '💖 Réponse Saint-Valentin 2026'
-                })
-            }).catch(error => {
-                console.log('Note: Configurez Formspree pour recevoir les notifications email');
-            });
-        }
-
-        // Initialiser les cœurs flottants au chargement
-        window.onload = function() {
-            createFloatingHearts();
-        };
-    </script>
-</body>
-</html>
+            createConfetti(
